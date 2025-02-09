@@ -1,18 +1,8 @@
 import React, { useState } from "react";
 import { GoogleMap, InfoWindow, useLoadScript } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
-
-interface Property {
-  region_id: number;
-  region_name: number;
-  city: string;
-  state: string;
-  metro: string;
-  county_name: string;
-  price: number;
-  latitude: number;
-  longitude: number;
-}
+import { Property } from "@/types/property";
+import { usePropertyStore } from "@/store/propertyStore";
 
 interface MapContainerProps {
   properties: Property[];
@@ -21,17 +11,15 @@ interface MapContainerProps {
 // 상수를 컴포넌트 외부로 이동
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
-const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
+const MapContainer = ({ properties }: MapContainerProps) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
   const navigate = useNavigate();
+  const { selectedProperty, setSelectedProperty } = usePropertyStore();
 
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
-    null
-  );
   const [propertyImage, setPropertyImage] = useState<string>("");
   const [center, setCenter] = useState(
     properties.length > 0

@@ -3,10 +3,11 @@ import Sidebar from "@/components/Sidebar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import example from "@/assets/example.json";
+import { Property } from "@/types/property";
 
 const FindWithMapPage = () => {
-  const [properties, setProperties] = useState([]);
-  const [cities, setCities] = useState([]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProperties = async () => {

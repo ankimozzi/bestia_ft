@@ -13,7 +13,7 @@ function App() {
           <Route path="/" element={<FindWithMapPage />} />
           <Route path="/property/:id" element={<PropertyDetailPage />} />
           <Route
-            path="/purchase-process/:id"
+            path="/property-process/:id"
             element={<PropertyProcessPage />}
           />
         </Route>

@@ -1,83 +1,46 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import example from "@/assets/example.json";
+import { usePropertyStore } from "@/store/propertyStore";
 
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
-interface Property {
-  region_id: number;
-  region_name: number;
-  city: string;
-  state: string;
-  metro: string;
-  county_name: string;
-  price: number;
-  latitude: number;
-  longitude: number;
-}
-
 const PropertyDetailPage = () => {
-  const { id } = useParams();
-  const [property, setProperty] = useState<Property | null>(null);
-  const [showPurchaseProcess, setShowPurchaseProcess] = useState(false);
-  const [additionalCosts, setAdditionalCosts] = useState({
-    downPayment: 20, // 계약금 비율 (%)
-    propertyTax: 1.2, // 재산세 비율 (%)
-    insurance: 1200, // 연간 보험료
-    maintenance: 2400, // 연간 관리비
-    inspection: 500, // 검사 비용
-    closing: 5000, // 클로징 비용
-  });
+  const navigate = useNavigate();
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const { selectedProperty, setSelectedProperty } = usePropertyStore();
+
+  const additionalCosts = {
+    downPayment: 20,
+    propertyTax: 1.2,
+    insurance: 1200,
+    maintenance: 2400,
+    inspection: 500,
+    closing: 5000,
+  };
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-
   const handleLoad = (map: google.maps.Map) => {
     setMap(map);
   };
 
-  useEffect(() => {
-    // 실제로는 API 호출을 하겠지만, 지금은 example 데이터 사용
-    const propertyData = example.properties.find(
-      (p) => p.region_id === Number(id)
-    );
-    setProperty(propertyData || null);
-  }, [id]);
-
-  const handleModalClose = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      setShowPurchaseProcess(false);
+  const handleStartPurchase = () => {
+    if (selectedProperty) {
+      navigate(`/property-process/${selectedProperty.region_id}`);
     }
   };
 
-  useEffect(() => {
-    if (!map || !property) return;
-
-    new google.maps.marker.AdvancedMarkerElement({
-      position: { lat: property.latitude, lng: property.longitude },
-      map,
-      title: property.city,
-    });
-  }, [map, property]);
-
-  const navigate = useNavigate();
-
-  const handlePurchaseClick = () => {
-    navigate(`/purchase-process/${property.region_id}`);
-  };
-
-  if (!property || !isLoaded) return <div>Loading...</div>;
-
   const calculateTotalCost = () => {
+    if (!selectedProperty) return 0;
+
     const downPaymentAmount =
-      (property.price * additionalCosts.downPayment) / 100;
+      (selectedProperty.price * additionalCosts.downPayment) / 100;
     const propertyTaxAmount =
-      (property.price * additionalCosts.propertyTax) / 100;
+      (selectedProperty.price * additionalCosts.propertyTax) / 100;
     const totalCost =
       downPaymentAmount +
       propertyTaxAmount +
@@ -88,13 +51,16 @@ const PropertyDetailPage = () => {
     return totalCost;
   };
 
+  if (!isLoaded) return <div>Loading...</div>;
+  if (!selectedProperty) return <div>Property not found</div>;
+
   return (
     <div className="min-h-screen bg-white">
       {/* 메인 이미지 섹션 */}
       <div className="h-[40vh]">
         <img
-          src={`https://picsum.photos/seed/${property.region_id}/1200/800`}
-          alt={property.city}
+          src={`https://picsum.photos/seed/${selectedProperty.region_id}/1200/800`}
+          alt={selectedProperty.city}
           className="w-full h-full object-cover"
         />
       </div>
@@ -105,9 +71,9 @@ const PropertyDetailPage = () => {
           {/* 제목 및 기본 정보 */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
-              {property.city}, {property.state}
+              {selectedProperty.city}, {selectedProperty.state}
             </h1>
-            <p className="text-gray-600">{property.metro}</p>
+            <p className="text-gray-600">{selectedProperty.metro}</p>
           </div>
 
           {/* 상세 정보 그리드 */}
@@ -119,7 +85,10 @@ const PropertyDetailPage = () => {
                 <GoogleMap
                   mapContainerStyle={{ height: "100%", width: "100%" }}
                   zoom={15}
-                  center={{ lat: property.latitude, lng: property.longitude }}
+                  center={{
+                    lat: selectedProperty.latitude,
+                    lng: selectedProperty.longitude,
+                  }}
                   onLoad={handleLoad}
                   options={{
                     mapId: "b7b796cbc9406757",
@@ -138,11 +107,15 @@ const PropertyDetailPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-gray-50">
                     <p className="text-sm text-gray-600">지역</p>
-                    <p className="font-semibold">{property.county_name}</p>
+                    <p className="font-semibold">
+                      {selectedProperty.county_name}
+                    </p>
                   </div>
                   <div className="p-4 bg-gray-50">
                     <p className="text-sm text-gray-600">지역 코드</p>
-                    <p className="font-semibold">{property.region_name}</p>
+                    <p className="font-semibold">
+                      {selectedProperty.region_name}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -156,7 +129,7 @@ const PropertyDetailPage = () => {
               <div className="mb-6">
                 <p className="text-gray-600">매매가</p>
                 <p className="text-3xl font-bold text-blue-600">
-                  ${property.price.toLocaleString()}
+                  ${selectedProperty.price.toLocaleString()}
                 </p>
               </div>
 
@@ -167,7 +140,7 @@ const PropertyDetailPage = () => {
                   <span>
                     $
                     {(
-                      (property.price * additionalCosts.downPayment) /
+                      (selectedProperty.price * additionalCosts.downPayment) /
                       100
                     ).toLocaleString()}
                   </span>
@@ -177,7 +150,7 @@ const PropertyDetailPage = () => {
                   <span>
                     $
                     {(
-                      (property.price * additionalCosts.propertyTax) /
+                      (selectedProperty.price * additionalCosts.propertyTax) /
                       100
                     ).toLocaleString()}
                   </span>
@@ -212,55 +185,15 @@ const PropertyDetailPage = () => {
 
               {/* 구매 버튼 */}
               <button
-                onClick={handlePurchaseClick}
-                className="w-full bg-blue-600 text-white py-4 font-semibold hover:bg-blue-700 transition-colors"
+                onClick={handleStartPurchase}
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                구매 절차 시작하기
+                구매 프로세스 시작하기
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* 구매 프로세스 모달 */}
-      {showPurchaseProcess && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleModalClose}
-        >
-          <div className="bg-white p-8 max-w-2xl w-full mx-4">
-            <h2 className="text-2xl font-bold mb-4">미국 부동산 구매 절차</h2>
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">1. 부동산 선택 및 가격 협상</h3>
-                <p className="text-gray-600">현재 진행 중</p>
-              </div>
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">2. 매매계약서 작성</h3>
-                <p className="text-gray-600">다음 단계</p>
-              </div>
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">3. 에스크로 계좌 개설</h3>
-              </div>
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">4. 주택 검사</h3>
-              </div>
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">5. 대출 승인</h3>
-              </div>
-              <div className="p-4 bg-gray-50">
-                <h3 className="font-semibold">6. 클로징</h3>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowPurchaseProcess(false)}
-              className="mt-6 w-full bg-blue-500 text-white py-2 hover:bg-blue-600"
-            >
-              닫기
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
