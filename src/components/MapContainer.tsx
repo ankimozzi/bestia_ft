@@ -1,22 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  InfoWindow,
-  useLoadScript,
-} from "@react-google-maps/api";
-
-interface Property {
-  region_id: number;
-  region_name: number;
-  city: string;
-  state: string;
-  metro: string;
-  county_name: string;
-  price: number;
-  latitude: number;
-  longitude: number;
-}
+import React, { useState } from "react";
+import { GoogleMap, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
+import { Property } from "@/types/property";
+import { usePropertyStore } from "@/store/propertyStore";
 
 interface MapContainerProps {
   properties: Property[];
@@ -25,15 +11,15 @@ interface MapContainerProps {
 // 상수를 컴포넌트 외부로 이동
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
-const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
+const MapContainer = ({ properties }: MapContainerProps) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
-    null
-  );
+  const navigate = useNavigate();
+  const { selectedProperty, setSelectedProperty } = usePropertyStore();
+
   const [propertyImage, setPropertyImage] = useState<string>("");
   const [center, setCenter] = useState(
     properties.length > 0
@@ -56,6 +42,10 @@ const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
     setSelectedProperty(property);
     setPropertyImage(getRandomPropertyImage());
     setCenter({ lat: property.latitude, lng: property.longitude });
+  };
+
+  const handlePropertyClick = (propertyId: number) => {
+    navigate(`/property/${propertyId}`);
   };
 
   const onLoad = (map: google.maps.Map) => {
@@ -120,6 +110,12 @@ const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
               <p className="text-sm text-gray-500">
                 Metro: {selectedProperty.metro}
               </p>
+              <button
+                onClick={() => handlePropertyClick(selectedProperty.region_id)}
+                className="mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                자세히 보기
+              </button>
             </div>
           </InfoWindow>
         )}

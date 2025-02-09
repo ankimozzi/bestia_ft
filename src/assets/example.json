@@ -1,48 +1,15 @@
 {
     "properties": [
         {
-            "region_id": 95992,
-            "region_name": 90011,
-            "city": "Los Angeles",
-            "state": "CA",
-            "metro": "Los Angeles-Long Beach-Anaheim, CA",
-            "county_name": "Los Angeles County",
-            "price": 594352.41,
-            "latitude": 34.1442,
-            "longitude": -118.1517
-        },
-        {
             "region_id": 96193,
             "region_name": 90650,
             "city": "Norwalk",
             "state": "CA",
             "metro": "Los Angeles-Long Beach-Anaheim, CA",
             "county_name": "Los Angeles County",
-            "price": 748719.65,
+            "price": 748719.6520341778,
             "latitude": 37.7083,
             "longitude": -118.4879
-        },
-        {
-            "region_id": 96361,
-            "region_name": 91331,
-            "city": "Los Angeles",
-            "state": "CA",
-            "metro": "Los Angeles-Long Beach-Anaheim, CA",
-            "county_name": "Los Angeles County",
-            "price": 736294.75,
-            "latitude": 34.1132,
-            "longitude": -118.1827
-        },
-        {
-            "region_id": 96025,
-            "region_name": 90044,
-            "city": "Los Angeles",
-            "state": "CA",
-            "metro": "Los Angeles-Long Beach-Anaheim, CA",
-            "county_name": "Los Angeles County",
-            "price": 639959.31,
-            "latitude": 34.0772,
-            "longitude": -118.2187
         },
         {
             "region_id": 96817,
@@ -51,9 +18,207 @@
             "state": "CA",
             "metro": "Riverside-San Bernardino-Ontario, CA",
             "county_name": "San Bernardino County",
-            "price": 702875.61,
+            "price": 702875.6082342392,
             "latitude": 36.9483,
             "longitude": -119.2479
+        },
+        {
+            "region_id": 97771,
+            "region_name": 94565,
+            "city": "Pittsburg",
+            "state": "CA",
+            "metro": "San Francisco-Oakland-Berkeley, CA",
+            "county_name": "Contra Costa County",
+            "price": 579405.51494463,
+            "latitude": 37.4883,
+            "longitude": -118.7079
+        },
+        {
+            "region_id": 96107,
+            "region_name": 90250,
+            "city": "Hawthorne",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 867942.294678174,
+            "latitude": 36.8483,
+            "longitude": -119.3479
+        },
+        {
+            "region_id": 97223,
+            "region_name": 93307,
+            "city": "Bakersfield",
+            "state": "CA",
+            "metro": "Bakersfield, CA",
+            "county_name": "Kern County",
+            "price": 311156.0120107956,
+            "latitude": 35.396300000000004,
+            "longitude": -118.9957
+        },
+        {
+            "region_id": 96990,
+            "region_name": 92683,
+            "city": "Westminster",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Orange County",
+            "price": 1048187.0082139404,
+            "latitude": 37.6783,
+            "longitude": -118.5179
+        },
+        {
+            "region_id": 96825,
+            "region_name": 92345,
+            "city": "Hesperia",
+            "state": "CA",
+            "metro": "Riverside-San Bernardino-Ontario, CA",
+            "county_name": "San Bernardino County",
+            "price": 437629.459693426,
+            "latitude": 37.0283,
+            "longitude": -119.1679
+        },
+        {
+            "region_id": 97104,
+            "region_name": 93033,
+            "city": "Oxnard",
+            "state": "CA",
+            "metro": "Oxnard-Thousand Oaks-Ventura, CA",
+            "county_name": "Ventura County",
+            "price": 693493.1510697291,
+            "latitude": 36.8183,
+            "longitude": -119.3779
+        },
+        {
+            "region_id": 97567,
+            "region_name": 94112,
+            "city": "San Francisco",
+            "state": "CA",
+            "metro": "San Francisco-Oakland-Berkeley, CA",
+            "county_name": "San Francisco County",
+            "price": 1074772.9055892627,
+            "latitude": 37.8419,
+            "longitude": -122.3524
+        },
+        {
+            "region_id": 98432,
+            "region_name": 95823,
+            "city": "Sacramento",
+            "state": "CA",
+            "metro": "Sacramento-Roseville-Folsom, CA",
+            "county_name": "Sacramento County",
+            "price": 429169.525527937,
+            "latitude": 38.6136,
+            "longitude": -121.4624
+        },
+        {
+            "region_id": 97940,
+            "region_name": 95035,
+            "city": "Milpitas",
+            "state": "CA",
+            "metro": "San Jose-Sunnyvale-Santa Clara, CA",
+            "county_name": "Santa Clara County",
+            "price": 1479752.3769222172,
+            "latitude": 37.1783,
+            "longitude": -119.0179
+        },
+        {
+            "region_id": 96488,
+            "region_name": 91744,
+            "city": "La Puente",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 728225.1039360148,
+            "latitude": 37.6583,
+            "longitude": -118.5379
+        },
+        {
+            "region_id": 97189,
+            "region_name": 93257,
+            "city": "Porterville",
+            "state": "CA",
+            "metro": "Visalia, CA",
+            "county_name": "Tulare County",
+            "price": 314813.0050233317,
+            "latitude": 37.6683,
+            "longitude": -118.5279
+        },
+        {
+            "region_id": 97328,
+            "region_name": 93550,
+            "city": "Palmdale",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 455663.4722204206,
+            "latitude": 37.0583,
+            "longitude": -119.1379
+        },
+        {
+            "region_id": 96934,
+            "region_name": 92592,
+            "city": "Temecula",
+            "state": "CA",
+            "metro": "Riverside-San Bernardino-Ontario, CA",
+            "county_name": "Riverside County",
+            "price": 764940.8394309185,
+            "latitude": 37.118300000000005,
+            "longitude": -119.0779
+        },
+        {
+            "region_id": 98325,
+            "region_name": 95630,
+            "city": "Folsom",
+            "state": "CA",
+            "metro": "Sacramento-Roseville-Folsom, CA",
+            "county_name": "Sacramento County",
+            "price": 761519.4740794875,
+            "latitude": 37.0283,
+            "longitude": -119.1679
+        },
+        {
+            "region_id": 97073,
+            "region_name": 92880,
+            "city": "Eastvale",
+            "state": "CA",
+            "metro": "Riverside-San Bernardino-Ontario, CA",
+            "county_name": "Riverside County",
+            "price": 950201.0459818612,
+            "latitude": 37.5083,
+            "longitude": -118.6879
+        },
+        {
+            "region_id": 97751,
+            "region_name": 94544,
+            "city": "Hayward",
+            "state": "CA",
+            "metro": "San Francisco-Oakland-Berkeley, CA",
+            "county_name": "Alameda County",
+            "price": 872484.516486165,
+            "latitude": 37.2883,
+            "longitude": -118.9079
+        },
+        {
+            "region_id": 96208,
+            "region_name": 90706,
+            "city": "Bellflower",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 787258.176351817,
+            "latitude": 36.8583,
+            "longitude": -119.3379
+        },
+        {
+            "region_id": 97318,
+            "region_name": 93535,
+            "city": "Lancaster",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 436804.2493098869,
+            "latitude": 36.9583,
+            "longitude": -119.2379
         }
     ]
 }

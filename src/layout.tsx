@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,10 +19,10 @@ const Layout = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
+      <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-blue-500 to-purple-600">
         <div className="w-full px-6 flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="h-8 w-16 rounded-lg bg-white flex items-center justify-center shadow-md">
+            <div className="h-8 w-16 rounded-lg bg-white flex items-center justify-center">
               <span className="text-lg font-bold text-blue-600">Bestia</span>
             </div>
           </Link>
