@@ -1,7 +1,3 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import MapContainer from "./components/MapContainer";
-import Sidebar from "./components/Sidebar";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layout";

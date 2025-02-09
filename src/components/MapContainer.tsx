@@ -1,104 +1,130 @@
-import { useCallback, useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
+  LoadScript,
+  InfoWindow,
   useLoadScript,
-  MarkerF,
-  InfoWindowF,
 } from "@react-google-maps/api";
 
 interface Property {
-  RegionID: string;
-  latitude: string;
-  longitude: string;
-  City: string;
-  State: string;
-  zipcode: string;
+  region_id: number;
+  region_name: number;
+  city: string;
+  state: string;
+  metro: string;
+  county_name: string;
   price: number;
+  latitude: number;
+  longitude: number;
 }
 
 interface MapContainerProps {
   properties: Property[];
 }
 
-const MapContainer = ({ properties }: MapContainerProps) => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+// 상수를 컴포넌트 외부로 이동
+const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
+
+const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
+    libraries: GOOGLE_MAPS_LIBRARIES,
+  });
+
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
-
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
-  });
-
-  const containerStyle = useMemo(
-    () => ({
-      width: "100%",
-      height: "100%",
-    }),
-    []
+  const [propertyImage, setPropertyImage] = useState<string>("");
+  const [center, setCenter] = useState(
+    properties.length > 0
+      ? {
+          lat: properties[0].latitude,
+          lng: properties[0].longitude,
+        }
+      : {
+          lat: 34.0522,
+          lng: -118.2437,
+        }
   );
 
-  const center = useMemo(
-    () => ({
-      lat: 36.7783,
-      lng: -119.4179,
-    }),
-    []
-  );
+  const getRandomPropertyImage = () => {
+    // Picsum Photos API - 무작위 부동산 이미지 (800x600)
+    return `https://picsum.photos/seed/${Math.random()}/800/600`;
+  };
 
-  const handleLoad = useCallback((map: google.maps.Map) => {
-    setMap(map);
-  }, []);
+  const handleMarkerClick = (property: Property) => {
+    setSelectedProperty(property);
+    setPropertyImage(getRandomPropertyImage());
+    setCenter({ lat: property.latitude, lng: property.longitude });
+  };
 
-  const handleUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
+  const onLoad = (map: google.maps.Map) => {
+    if (!properties || properties.length === 0) return;
 
-  if (loadError)
-    return (
-      <div className="p-4 text-red-500">지도를 불러오는데 실패했습니다</div>
-    );
-  if (!isLoaded) return <div className="p-4">지도를 불러오는 중...</div>;
+    properties.forEach((property) => {
+      const marker = new google.maps.marker.AdvancedMarkerElement({
+        position: {
+          lat: property.latitude,
+          lng: property.longitude,
+        },
+        map,
+        title: property.city,
+      });
+
+      marker.addListener("click", () => handleMarkerClick(property));
+    });
+  };
+
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={6}
-      onLoad={handleLoad}
-      onUnmount={handleUnmount}
-    >
-      {properties?.map((property) => (
-        <MarkerF
-          key={property.RegionID}
-          position={{
-            lat: Number(property.latitude),
-            lng: Number(property.longitude),
-          }}
-          onClick={() => setSelectedProperty(property)}
-        />
-      ))}
-      {selectedProperty && (
-        <InfoWindowF
-          position={{
-            lat: Number(selectedProperty.latitude),
-            lng: Number(selectedProperty.longitude),
-          }}
-          onCloseClick={() => setSelectedProperty(null)}
-        >
-          <div className="max-w-[200px]">
-            <h3 className="font-semibold mb-2">
-              {selectedProperty.City}, {selectedProperty.State}
-            </h3>
-            <p className="mb-1">우편번호: {selectedProperty.zipcode}</p>
-            <p className="font-bold text-blue-700">
-              가격: ${selectedProperty.price.toLocaleString()}
-            </p>
-          </div>
-        </InfoWindowF>
-      )}
-    </GoogleMap>
+    <div className="flex-1 relative">
+      <GoogleMap
+        mapContainerStyle={{ height: "100%", width: "100%" }}
+        zoom={6}
+        center={center}
+        onLoad={onLoad}
+        onClick={() => setSelectedProperty(null)}
+        options={{
+          mapId: "b7b796cbc9406757",
+        }}
+      >
+        {selectedProperty && (
+          <InfoWindow
+            position={{
+              lat: selectedProperty.latitude,
+              lng: selectedProperty.longitude,
+            }}
+            onCloseClick={() => setSelectedProperty(null)}
+          >
+            <div className="p-2 max-w-[300px]">
+              <div className="relative w-full h-[200px] mb-3 rounded-lg overflow-hidden">
+                <img
+                  src={propertyImage}
+                  alt={`${selectedProperty.city} property`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-semibold text-lg mb-1">
+                {selectedProperty.city}, {selectedProperty.state}
+              </h3>
+              <p className="text-sm text-gray-600 mb-2">
+                {selectedProperty.county_name}
+              </p>
+              <p className="text-lg font-bold text-blue-600">
+                ${selectedProperty.price.toLocaleString()}
+              </p>
+              <p className="text-sm text-gray-500">
+                Region: {selectedProperty.region_name}
+              </p>
+              <p className="text-sm text-gray-500">
+                Metro: {selectedProperty.metro}
+              </p>
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+    </div>
   );
 };
 

@@ -1,0 +1,59 @@
+{
+    "properties": [
+        {
+            "region_id": 95992,
+            "region_name": 90011,
+            "city": "Los Angeles",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 594352.41,
+            "latitude": 34.1442,
+            "longitude": -118.1517
+        },
+        {
+            "region_id": 96193,
+            "region_name": 90650,
+            "city": "Norwalk",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 748719.65,
+            "latitude": 37.7083,
+            "longitude": -118.4879
+        },
+        {
+            "region_id": 96361,
+            "region_name": 91331,
+            "city": "Los Angeles",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 736294.75,
+            "latitude": 34.1132,
+            "longitude": -118.1827
+        },
+        {
+            "region_id": 96025,
+            "region_name": 90044,
+            "city": "Los Angeles",
+            "state": "CA",
+            "metro": "Los Angeles-Long Beach-Anaheim, CA",
+            "county_name": "Los Angeles County",
+            "price": 639959.31,
+            "latitude": 34.0772,
+            "longitude": -118.2187
+        },
+        {
+            "region_id": 96817,
+            "region_name": 92336,
+            "city": "Fontana",
+            "state": "CA",
+            "metro": "Riverside-San Bernardino-Ontario, CA",
+            "county_name": "San Bernardino County",
+            "price": 702875.61,
+            "latitude": 36.9483,
+            "longitude": -119.2479
+        }
+    ]
+}

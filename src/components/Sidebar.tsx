@@ -11,17 +11,17 @@ interface FilterParams {
 }
 
 interface SidebarProps {
-  properties: Property[];
+  cities: string[];
   onFilter: (params: FilterParams) => void;
   className?: string;
 }
 
-const Sidebar = ({ properties, onFilter, className }: SidebarProps) => {
+const Sidebar = ({ cities, onFilter, className }: SidebarProps) => {
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [selectedCity, setSelectedCity] = useState("");
 
   // 고유한 도시 목록 생성
-  const cities = Array.from(new Set(properties.map((p) => p.City))).sort();
+  const uniqueCities = Array.from(new Set(cities)).sort();
 
   const handleFilter = () => {
     onFilter({
@@ -71,8 +71,8 @@ const Sidebar = ({ properties, onFilter, className }: SidebarProps) => {
           aria-label="도시 선택"
         >
           <option value="">모든 도시</option>
-          {cities.map((city) => (
-            <option key={city} value={city}>
+          {cities.map((city, index) => (
+            <option key={index} value={city}>
               {city}
             </option>
           ))}
