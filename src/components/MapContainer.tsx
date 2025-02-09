@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  InfoWindow,
-  useLoadScript,
-} from "@react-google-maps/api";
+import React, { useState } from "react";
+import { GoogleMap, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
 
 interface Property {
   region_id: number;
@@ -31,6 +27,8 @@ const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
     libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
+  const navigate = useNavigate();
+
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
@@ -56,6 +54,10 @@ const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
     setSelectedProperty(property);
     setPropertyImage(getRandomPropertyImage());
     setCenter({ lat: property.latitude, lng: property.longitude });
+  };
+
+  const handlePropertyClick = (propertyId: number) => {
+    navigate(`/property/${propertyId}`);
   };
 
   const onLoad = (map: google.maps.Map) => {
@@ -120,6 +122,12 @@ const MapContainer: React.FC<MapContainerProps> = ({ properties }) => {
               <p className="text-sm text-gray-500">
                 Metro: {selectedProperty.metro}
               </p>
+              <button
+                onClick={() => handlePropertyClick(selectedProperty.region_id)}
+                className="mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                자세히 보기
+              </button>
             </div>
           </InfoWindow>
         )}
