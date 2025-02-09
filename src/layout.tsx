@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const Layout = () => {
@@ -20,26 +20,34 @@ const Layout = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md">
+      <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
         <div className="w-full px-6 flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-lg font-bold text-primary-foreground">
-                B
-              </span>
+            <div className="h-8 w-16 rounded-lg bg-white flex items-center justify-center shadow-md">
+              <span className="text-lg font-bold text-blue-600">Bestia</span>
             </div>
-            <span className="text-xl font-semibold">부동산 플랫폼</span>
           </Link>
+
+          {/* Search Bar */}
+          <div className="relative w-1/2">
+            <input
+              type="text"
+              placeholder="Search properties..."
+              className="border rounded-full p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-white bg-white shadow-inner"
+              aria-label="Search properties"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
             <Link
               to="/search"
               className={cn(
-                "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+                "px-4 py-2 text-sm font-medium rounded-md transition-colors text-white",
                 isActiveLink("/search")
-                  ? "bg-secondary text-secondary-foreground"
-                  : "hover:bg-secondary/80"
+                  ? "bg-white text-blue-600"
+                  : "hover:bg-white/80"
               )}
             >
               매물 검색
@@ -47,10 +55,10 @@ const Layout = () => {
             <Link
               to="/map"
               className={cn(
-                "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+                "px-4 py-2 text-sm font-medium rounded-md transition-colors text-white",
                 isActiveLink("/map")
-                  ? "bg-secondary text-secondary-foreground"
-                  : "hover:bg-secondary/80"
+                  ? "bg-white text-blue-600"
+                  : "hover:bg-white/80"
               )}
             >
               지도 보기
@@ -58,10 +66,10 @@ const Layout = () => {
             <Link
               to="/favorites"
               className={cn(
-                "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+                "px-4 py-2 text-sm font-medium rounded-md transition-colors text-white",
                 isActiveLink("/favorites")
-                  ? "bg-secondary text-secondary-foreground"
-                  : "hover:bg-secondary/80"
+                  ? "bg-white text-blue-600"
+                  : "hover:bg-white/80"
               )}
             >
               관심 매물
@@ -72,10 +80,14 @@ const Layout = () => {
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" asChild>
-                <Link to="/login">로그인</Link>
+                <Link to="/login" className="text-white">
+                  로그인
+                </Link>
               </Button>
               <Button asChild>
-                <Link to="/register">회원가입</Link>
+                <Link to="/register" className="text-white">
+                  회원가입
+                </Link>
               </Button>
             </div>
 
@@ -83,10 +95,10 @@ const Layout = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-5 w-5 text-white" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 bg-white">
                 <DropdownMenuItem asChild>
                   <Link to="/search">매물 검색</Link>
                 </DropdownMenuItem>
@@ -112,88 +124,6 @@ const Layout = () => {
       <main className="flex-1 w-full px-6 py-8">
         <Outlet />
       </main>
-
-      {/* Footer */}
-      <footer className="border-t bg-secondary/30">
-        <div className="w-full px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold">회사 소개</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    to="/about"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    소개
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/careers"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    채용
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold">고객 지원</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    to="/contact"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    문의하기
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/faq"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    자주 묻는 질문
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold">법적 고지</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    to="/privacy"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    개인정보처리방침
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/terms"
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    이용약관
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h4 className="text-sm font-semibold">고객센터</h4>
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <p>평일 09:00 - 18:00</p>
-                <p>점심시간 12:00 - 13:00</p>
-                <p className="font-medium text-foreground">1544-0000</p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-            © 2024 부동산 플랫폼. All rights reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
