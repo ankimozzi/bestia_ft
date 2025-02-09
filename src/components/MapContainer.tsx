@@ -34,7 +34,7 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   const containerStyle = useMemo(
     () => ({
       width: "100%",
-      height: "100vh",
+      height: "100%",
     }),
     []
   );
