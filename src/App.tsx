@@ -4,6 +4,7 @@ import Layout from "./layout";
 import FindWithMapPage from "./pages/FindWithMapPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertyProcessPage from "./pages/PropertyProcessPage";
+import ContractSummaryPage from "./pages/ContractSummaryPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             path="/property-process/:id"
             element={<PropertyProcessPage />}
           />
+          <Route path="/contract-summary" element={<ContractSummaryPage />} />
         </Route>
       </Routes>
     </Router>
