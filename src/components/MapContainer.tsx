@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { GoogleMap, InfoWindow, useLoadScript } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { Property } from "@/types/property";
@@ -12,6 +12,8 @@ interface MapContainerProps {
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
 const MapContainer = ({ properties }: MapContainerProps) => {
+  console.log("Properties received:", properties); // 데이터가 제대로 전달되는지 확인
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
@@ -51,7 +53,15 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   const onLoad = (map: google.maps.Map) => {
     if (!properties || properties.length === 0) return;
 
+    console.log("Creating markers for:", properties); // 마커 생성 시점의 데이터 확인
+
     properties.forEach((property) => {
+      console.log(
+        "Creating marker for:",
+        property.city,
+        property.latitude,
+        property.longitude
+      );
       const marker = new google.maps.marker.AdvancedMarkerElement({
         position: {
           lat: property.latitude,
@@ -64,6 +74,21 @@ const MapContainer = ({ properties }: MapContainerProps) => {
       marker.addListener("click", () => handleMarkerClick(property));
     });
   };
+
+  useEffect(() => {
+    if (!properties.length) return;
+
+    // 마커 생성 로직
+    properties.forEach((property) => {
+      console.log(
+        "Creating marker for:",
+        property.city,
+        property.latitude,
+        property.longitude
+      );
+      // 마커 생성 코드
+    });
+  }, [properties]);
 
   if (!isLoaded) return <div>Loading...</div>;
 
