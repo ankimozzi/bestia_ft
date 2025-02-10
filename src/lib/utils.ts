@@ -19,3 +19,7 @@ export const formatDate = (date: string) => {
     day: "numeric",
   });
 };
+
+export const parseCurrency = (price: string): number => {
+  return Number(price.replace(/[^0-9.-]+/g, ""));
+};

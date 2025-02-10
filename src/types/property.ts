@@ -1,13 +1,15 @@
 interface Property {
-  region_id: number;
-  region_name: number;
+  id: number;
+  position: {
+    lat: number;
+    lng: number;
+  };
+  title: string;
+  price: string;
+  address: string;
   city: string;
   state: string;
-  metro: string;
-  county_name: string;
-  price: number;
-  latitude: number;
-  longitude: number;
+  zipcode: string;
 }
 
 export type { Property };

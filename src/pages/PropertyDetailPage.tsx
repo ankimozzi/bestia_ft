@@ -2,21 +2,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { usePropertyStore } from "@/store/propertyStore";
+import { parseCurrency } from "@/lib/utils";
 
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
 const PropertyDetailPage = () => {
   const navigate = useNavigate();
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const { selectedProperty, setSelectedProperty } = usePropertyStore();
+  const { selectedProperty } = usePropertyStore();
 
   const additionalCosts = {
-    downPayment: 20,
-    propertyTax: 1.2,
-    insurance: 1200,
-    maintenance: 2400,
-    inspection: 500,
-    closing: 5000,
+    downPayment: 10,
+    propertyTax: 0.8,
+    insurance: 1000,
+    maintenance: 2000,
+    inspection: 300,
+    closing: 3000,
   };
 
   const { isLoaded } = useLoadScript({
@@ -24,23 +24,20 @@ const PropertyDetailPage = () => {
     libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
-  const handleLoad = (map: google.maps.Map) => {
-    setMap(map);
-  };
-
   const handleStartPurchase = () => {
     if (selectedProperty) {
-      navigate(`/property-process/${selectedProperty.region_id}`);
+      navigate(`/property-process/${selectedProperty.id}`);
     }
   };
 
   const calculateTotalCost = () => {
     if (!selectedProperty) return 0;
 
-    const downPaymentAmount =
-      (selectedProperty.price * additionalCosts.downPayment) / 100;
-    const propertyTaxAmount =
-      (selectedProperty.price * additionalCosts.propertyTax) / 100;
+    const priceNumber = parseCurrency(selectedProperty.price);
+    const downPaymentAmount = (priceNumber * additionalCosts.downPayment) / 100;
+    const propertyTaxAmount = (priceNumber * additionalCosts.propertyTax) / 100;
+
+    // 매매가 대신 계약금(downPayment)만 포함
     const totalCost =
       downPaymentAmount +
       propertyTaxAmount +
@@ -48,6 +45,7 @@ const PropertyDetailPage = () => {
       additionalCosts.maintenance +
       additionalCosts.inspection +
       additionalCosts.closing;
+
     return totalCost;
   };
 
@@ -59,8 +57,8 @@ const PropertyDetailPage = () => {
       {/* 메인 이미지 섹션 */}
       <div className="h-[40vh]">
         <img
-          src={`https://picsum.photos/seed/${selectedProperty.region_id}/1200/800`}
-          alt={selectedProperty.city}
+          src={`https://picsum.photos/seed/${selectedProperty.id}/1200/800`}
+          alt={selectedProperty.title}
           className="w-full h-full object-cover"
         />
       </div>
@@ -71,9 +69,9 @@ const PropertyDetailPage = () => {
           {/* 제목 및 기본 정보 */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
-              {selectedProperty.city}, {selectedProperty.state}
+              {selectedProperty.title}
             </h1>
-            <p className="text-gray-600">{selectedProperty.metro}</p>
+            <p className="text-gray-600">{selectedProperty.address}</p>
           </div>
 
           {/* 상세 정보 그리드 */}
@@ -86,10 +84,9 @@ const PropertyDetailPage = () => {
                   mapContainerStyle={{ height: "100%", width: "100%" }}
                   zoom={15}
                   center={{
-                    lat: selectedProperty.latitude,
-                    lng: selectedProperty.longitude,
+                    lat: selectedProperty.position.lat,
+                    lng: selectedProperty.position.lng,
                   }}
-                  onLoad={handleLoad}
                   options={{
                     mapId: "b7b796cbc9406757",
                     // 추가 맵 옵션
@@ -107,15 +104,11 @@ const PropertyDetailPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-gray-50">
                     <p className="text-sm text-gray-600">지역</p>
-                    <p className="font-semibold">
-                      {selectedProperty.county_name}
-                    </p>
+                    <p className="font-semibold">{selectedProperty.address}</p>
                   </div>
                   <div className="p-4 bg-gray-50">
                     <p className="text-sm text-gray-600">지역 코드</p>
-                    <p className="font-semibold">
-                      {selectedProperty.region_name}
-                    </p>
+                    <p className="font-semibold">{selectedProperty.state}</p>
                   </div>
                 </div>
               </div>
@@ -129,7 +122,7 @@ const PropertyDetailPage = () => {
               <div className="mb-6">
                 <p className="text-gray-600">매매가</p>
                 <p className="text-3xl font-bold text-blue-600">
-                  ${selectedProperty.price.toLocaleString()}
+                  {selectedProperty.price.toLocaleString()}
                 </p>
               </div>
 
@@ -140,7 +133,8 @@ const PropertyDetailPage = () => {
                   <span>
                     $
                     {(
-                      (selectedProperty.price * additionalCosts.downPayment) /
+                      (parseCurrency(selectedProperty.price) *
+                        additionalCosts.downPayment) /
                       100
                     ).toLocaleString()}
                   </span>
@@ -150,7 +144,8 @@ const PropertyDetailPage = () => {
                   <span>
                     $
                     {(
-                      (selectedProperty.price * additionalCosts.propertyTax) /
+                      (parseCurrency(selectedProperty.price) *
+                        additionalCosts.propertyTax) /
                       100
                     ).toLocaleString()}
                   </span>

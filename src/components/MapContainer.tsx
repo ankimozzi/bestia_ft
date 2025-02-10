@@ -26,8 +26,8 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   const [center, setCenter] = useState(
     properties.length > 0
       ? {
-          lat: properties[0].latitude,
-          lng: properties[0].longitude,
+          lat: properties[0].position.lat,
+          lng: properties[0].position.lng,
         }
       : {
           lat: 34.0522,
@@ -43,7 +43,10 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   const handleMarkerClick = (property: Property) => {
     setSelectedProperty(property);
     setPropertyImage(getRandomPropertyImage());
-    setCenter({ lat: property.latitude, lng: property.longitude });
+    setCenter({
+      lat: property.position.lat,
+      lng: property.position.lng,
+    });
   };
 
   const handlePropertyClick = (propertyId: number) => {
@@ -53,22 +56,23 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   const onLoad = (map: google.maps.Map) => {
     if (!properties || properties.length === 0) return;
 
-    console.log("Creating markers for:", properties); // 마커 생성 시점의 데이터 확인
+    console.log("Creating markers for:", properties);
 
     properties.forEach((property) => {
       console.log(
         "Creating marker for:",
         property.city,
-        property.latitude,
-        property.longitude
+        property.position.lat,
+        property.position.lng
       );
+
       const marker = new google.maps.marker.AdvancedMarkerElement({
         position: {
-          lat: property.latitude,
-          lng: property.longitude,
+          lat: property.position.lat,
+          lng: property.position.lng,
         },
         map,
-        title: property.city,
+        title: property.title,
       });
 
       marker.addListener("click", () => handleMarkerClick(property));
@@ -83,8 +87,8 @@ const MapContainer = ({ properties }: MapContainerProps) => {
       console.log(
         "Creating marker for:",
         property.city,
-        property.latitude,
-        property.longitude
+        property.position.lat,
+        property.position.lng
       );
       // 마커 생성 코드
     });
@@ -107,8 +111,8 @@ const MapContainer = ({ properties }: MapContainerProps) => {
         {selectedProperty && (
           <InfoWindow
             position={{
-              lat: selectedProperty.latitude,
-              lng: selectedProperty.longitude,
+              lat: selectedProperty.position.lat,
+              lng: selectedProperty.position.lng,
             }}
             onCloseClick={() => setSelectedProperty(null)}
           >
@@ -124,19 +128,19 @@ const MapContainer = ({ properties }: MapContainerProps) => {
                 {selectedProperty.city}, {selectedProperty.state}
               </h3>
               <p className="text-sm text-gray-600 mb-2">
-                {selectedProperty.county_name}
+                {selectedProperty.address}
               </p>
               <p className="text-lg font-bold text-blue-600">
                 ${selectedProperty.price.toLocaleString()}
               </p>
               <p className="text-sm text-gray-500">
-                Region: {selectedProperty.region_name}
+                Region: {selectedProperty.state}
               </p>
               <p className="text-sm text-gray-500">
-                Metro: {selectedProperty.metro}
+                Metro: {selectedProperty.city}
               </p>
               <button
-                onClick={() => handlePropertyClick(selectedProperty.region_id)}
+                onClick={() => handlePropertyClick(selectedProperty.id)}
                 className="mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
                 자세히 보기
