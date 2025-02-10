@@ -22,6 +22,8 @@ const PropertyDetailPage = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
+    language: "en",
+    region: "US",
   });
 
   const handleStartPurchase = () => {
@@ -37,7 +39,6 @@ const PropertyDetailPage = () => {
     const downPaymentAmount = (priceNumber * additionalCosts.downPayment) / 100;
     const propertyTaxAmount = (priceNumber * additionalCosts.propertyTax) / 100;
 
-    // 매매가 대신 계약금(downPayment)만 포함
     const totalCost =
       downPaymentAmount +
       propertyTaxAmount +
@@ -54,7 +55,7 @@ const PropertyDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* 메인 이미지 섹션 */}
+      {/* Main Image Section */}
       <div className="h-[40vh]">
         <img
           src={`https://picsum.photos/seed/${selectedProperty.id}/1200/800`}
@@ -63,10 +64,10 @@ const PropertyDetailPage = () => {
         />
       </div>
 
-      {/* 메인 콘텐츠 */}
+      {/* Main Content */}
       <div className="w-full px-4">
         <div className="py-6">
-          {/* 제목 및 기본 정보 */}
+          {/* Title and Basic Info */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
               {selectedProperty.title}
@@ -74,11 +75,11 @@ const PropertyDetailPage = () => {
             <p className="text-gray-600">{selectedProperty.address}</p>
           </div>
 
-          {/* 상세 정보 그리드 */}
+          {/* Detailed Info Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* 왼쪽: 지도 및 상세 정보 */}
+            {/* Left: Map and Details */}
             <div>
-              {/* 구글 맵 */}
+              {/* Google Map */}
               <div className="h-[400px] mb-6">
                 <GoogleMap
                   mapContainerStyle={{ height: "100%", width: "100%" }}
@@ -89,7 +90,6 @@ const PropertyDetailPage = () => {
                   }}
                   options={{
                     mapId: "b7b796cbc9406757",
-                    // 추가 맵 옵션
                     zoomControl: true,
                     mapTypeControl: false,
                     streetViewControl: true,
@@ -98,38 +98,38 @@ const PropertyDetailPage = () => {
                 />
               </div>
 
-              {/* 부동산 상세 정보 */}
+              {/* Property Details */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">부동산 정보</h2>
+                <h2 className="text-xl font-semibold">Property Details</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-gray-50">
-                    <p className="text-sm text-gray-600">지역</p>
+                    <p className="text-sm text-gray-600">Location</p>
                     <p className="font-semibold">{selectedProperty.address}</p>
                   </div>
                   <div className="p-4 bg-gray-50">
-                    <p className="text-sm text-gray-600">지역 코드</p>
+                    <p className="text-sm text-gray-600">Region Code</p>
                     <p className="font-semibold">{selectedProperty.state}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* 오른쪽: 가격 계산기 및 구매 버튼 */}
+            {/* Right: Cost Calculator and Purchase Button */}
             <div className="bg-gray-50 p-6">
-              <h2 className="text-2xl font-bold mb-6">비용 계산</h2>
+              <h2 className="text-2xl font-bold mb-6">Cost Calculation</h2>
 
-              {/* 기본 가격 */}
+              {/* Base Price */}
               <div className="mb-6">
-                <p className="text-gray-600">매매가</p>
+                <p className="text-gray-600">Sale Price</p>
                 <p className="text-3xl font-bold text-blue-600">
                   {selectedProperty.price.toLocaleString()}
                 </p>
               </div>
 
-              {/* 추가 비용 항목들 */}
+              {/* Additional Costs */}
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
-                  <span>계약금 ({additionalCosts.downPayment}%)</span>
+                  <span>Down Payment ({additionalCosts.downPayment}%)</span>
                   <span>
                     $
                     {(
@@ -140,7 +140,9 @@ const PropertyDetailPage = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>재산세 (연간 {additionalCosts.propertyTax}%)</span>
+                  <span>
+                    Property Tax (Annual {additionalCosts.propertyTax}%)
+                  </span>
                   <span>
                     $
                     {(
@@ -151,39 +153,41 @@ const PropertyDetailPage = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>보험료 (연간)</span>
+                  <span>Insurance (Annual)</span>
                   <span>${additionalCosts.insurance.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>관리비 (연간)</span>
+                  <span>Maintenance (Annual)</span>
                   <span>${additionalCosts.maintenance.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>검사 비용</span>
+                  <span>Inspection Fee</span>
                   <span>${additionalCosts.inspection.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>클로징 비용</span>
+                  <span>Closing Costs</span>
                   <span>${additionalCosts.closing.toLocaleString()}</span>
                 </div>
               </div>
 
-              {/* 총 비용 */}
+              {/* Total Cost */}
               <div className="border-t pt-4 mb-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold">총 초기 비용</span>
+                  <span className="text-lg font-semibold">
+                    Total Initial Costs
+                  </span>
                   <span className="text-2xl font-bold text-blue-600">
                     ${calculateTotalCost().toLocaleString()}
                   </span>
                 </div>
               </div>
 
-              {/* 구매 버튼 */}
+              {/* Purchase Button */}
               <button
                 onClick={handleStartPurchase}
                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                구매 프로세스 시작하기
+                Start Purchase Process
               </button>
             </div>
           </div>

@@ -20,7 +20,7 @@ const Sidebar = ({ cities, onFilter, className }: SidebarProps) => {
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [selectedCity, setSelectedCity] = useState("");
 
-  // 고유한 도시 목록 생성
+  // Create unique cities list
   const uniqueCities = Array.from(new Set(cities)).sort();
 
   const handleFilter = () => {
@@ -33,44 +33,44 @@ const Sidebar = ({ cities, onFilter, className }: SidebarProps) => {
 
   return (
     <div className={`w-64 p-4 bg-white shadow-lg ${className || ""}`}>
-      <h2 className="text-xl font-bold mb-4">부동산 필터</h2>
+      <h2 className="text-xl font-bold mb-4">Property Filter</h2>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">가격 범위</h3>
+        <h3 className="text-lg font-semibold mb-2">Price Range</h3>
         <div className="space-y-2">
           <input
             type="number"
-            placeholder="최소 가격"
+            placeholder="Minimum Price"
             value={priceRange.min}
             onChange={(e) =>
               setPriceRange((prev) => ({ ...prev, min: e.target.value }))
             }
             className="w-full p-2 border rounded"
-            aria-label="최소 가격"
+            aria-label="Minimum Price"
           />
           <div className="text-center">~</div>
           <input
             type="number"
-            placeholder="최대 가격"
+            placeholder="Maximum Price"
             value={priceRange.max}
             onChange={(e) =>
               setPriceRange((prev) => ({ ...prev, max: e.target.value }))
             }
             className="w-full p-2 border rounded"
-            aria-label="최대 가격"
+            aria-label="Maximum Price"
           />
         </div>
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">도시</h3>
+        <h3 className="text-lg font-semibold mb-2">City</h3>
         <select
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
           className="w-full p-2 border rounded"
-          aria-label="도시 선택"
+          aria-label="Select City"
         >
-          <option value="">모든 도시</option>
+          <option value="">All Cities</option>
           {cities.map((city, index) => (
             <option key={index} value={city}>
               {city}
@@ -82,9 +82,9 @@ const Sidebar = ({ cities, onFilter, className }: SidebarProps) => {
       <button
         onClick={handleFilter}
         className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-        aria-label="필터 적용"
+        aria-label="Apply Filter"
       >
-        필터 적용
+        Apply Filter
       </button>
     </div>
   );

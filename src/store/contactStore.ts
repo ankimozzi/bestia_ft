@@ -1,4 +1,3 @@
-import { Property } from "@/types/property";
 import { create } from "zustand";
 
 interface ContractInfo {
@@ -8,6 +7,15 @@ interface ContractInfo {
     state: string;
     price: number;
     address: string;
+    offerPrice?: number;
+    deposit?: number;
+    bankAccount?: {
+      accountId: string;
+      bankName: string;
+      accessToken: string;
+      itemId: string;
+      requestId: string;
+    };
   } | null;
 
   // 2단계: 매매계약

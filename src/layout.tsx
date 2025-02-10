@@ -40,7 +40,7 @@ const Layout = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4">
-            <Link
+            {/* <Link
               to="/search"
               className={cn(
                 "px-4 py-2 text-sm font-medium rounded-md transition-colors text-white",
@@ -49,7 +49,7 @@ const Layout = () => {
                   : "hover:bg-white/80"
               )}
             >
-              매물 검색
+              Search Properties
             </Link>
             <Link
               to="/map"
@@ -60,7 +60,7 @@ const Layout = () => {
                   : "hover:bg-white/80"
               )}
             >
-              지도 보기
+              View Map
             </Link>
             <Link
               to="/favorites"
@@ -71,8 +71,8 @@ const Layout = () => {
                   : "hover:bg-white/80"
               )}
             >
-              관심 매물
-            </Link>
+              Favorites
+            </Link> */}
           </nav>
 
           {/* Auth Buttons & Mobile Menu */}
@@ -80,18 +80,18 @@ const Layout = () => {
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" asChild>
                 <Link to="/login" className="text-white">
-                  로그인
+                  Login
                 </Link>
               </Button>
               <Button asChild>
                 <Link to="/register" className="text-white">
-                  회원가입
+                  Sign Up
                 </Link>
               </Button>
             </div>
 
             {/* Mobile Menu */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild className="md:hidden">
                 <Button variant="ghost" size="icon">
                   <Menu className="h-5 w-5 text-white" />
@@ -99,22 +99,22 @@ const Layout = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-white">
                 <DropdownMenuItem asChild>
-                  <Link to="/search">매물 검색</Link>
+                  <Link to="/search">Search Properties</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/map">지도 보기</Link>
+                  <Link to="/map">View Map</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/favorites">관심 매물</Link>
+                  <Link to="/favorites">Favorites</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/login">로그인</Link>
+                  <Link to="/login">Login</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/register">회원가입</Link>
+                  <Link to="/register">Sign Up</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
         </div>
       </header>
