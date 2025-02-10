@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { GoogleMap, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  InfoWindow,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { Property } from "@/types/property";
 import { usePropertyStore } from "@/store/propertyStore";
@@ -8,15 +13,16 @@ interface MapContainerProps {
   properties: Property[];
 }
 
-// 상수를 컴포넌트 외부로 이동
+// Move constants outside of component
 const GOOGLE_MAPS_LIBRARIES: "marker"[] = ["marker"];
 
 const MapContainer = ({ properties }: MapContainerProps) => {
-  console.log("Properties received:", properties); // 데이터가 제대로 전달되는지 확인
+  console.log("Properties received:", properties); // Check if data is properly passed
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
     libraries: GOOGLE_MAPS_LIBRARIES,
+    language: "en",
   });
 
   const navigate = useNavigate();
@@ -36,7 +42,7 @@ const MapContainer = ({ properties }: MapContainerProps) => {
   );
 
   const getRandomPropertyImage = () => {
-    // Picsum Photos API - 무작위 부동산 이미지 (800x600)
+    // Picsum Photos API - Random property image (800x600)
     return `https://picsum.photos/seed/${Math.random()}/800/600`;
   };
 
@@ -55,34 +61,13 @@ const MapContainer = ({ properties }: MapContainerProps) => {
 
   const onLoad = (map: google.maps.Map) => {
     if (!properties || properties.length === 0) return;
-
-    console.log("Creating markers for:", properties);
-
-    properties.forEach((property) => {
-      console.log(
-        "Creating marker for:",
-        property.city,
-        property.position.lat,
-        property.position.lng
-      );
-
-      const marker = new google.maps.marker.AdvancedMarkerElement({
-        position: {
-          lat: property.position.lat,
-          lng: property.position.lng,
-        },
-        map,
-        title: property.title,
-      });
-
-      marker.addListener("click", () => handleMarkerClick(property));
-    });
+    console.log("Map loaded with properties:", properties);
   };
 
   useEffect(() => {
     if (!properties.length) return;
 
-    // 마커 생성 로직
+    // Marker creation logic
     properties.forEach((property) => {
       console.log(
         "Creating marker for:",
@@ -90,7 +75,7 @@ const MapContainer = ({ properties }: MapContainerProps) => {
         property.position.lat,
         property.position.lng
       );
-      // 마커 생성 코드
+      // Marker creation code
     });
   }, [properties]);
 
@@ -108,6 +93,18 @@ const MapContainer = ({ properties }: MapContainerProps) => {
           mapId: "b7b796cbc9406757",
         }}
       >
+        {properties.map((property) => (
+          <Marker
+            key={property.id}
+            position={{
+              lat: property.position.lat,
+              lng: property.position.lng,
+            }}
+            onClick={() => handleMarkerClick(property)}
+            title={property.title}
+          />
+        ))}
+
         {selectedProperty && (
           <InfoWindow
             position={{
@@ -143,7 +140,7 @@ const MapContainer = ({ properties }: MapContainerProps) => {
                 onClick={() => handlePropertyClick(selectedProperty.id)}
                 className="mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
-                자세히 보기
+                View Details
               </button>
             </div>
           </InfoWindow>

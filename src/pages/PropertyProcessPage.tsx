@@ -4,16 +4,14 @@ import { usePropertyStore } from "@/store/propertyStore";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Step1PropertySelection from "@/components/purchase-steps/Step1PropertySelection";
-import Step2PurchaseAgreement from "@/components/purchase-steps/Step2PurchaseAgreement";
 import Step3Escrow from "@/components/purchase-steps/Step3Escrow";
-import Step4Inspection from "@/components/purchase-steps/Step4Inspection";
 import Step5MortgageApproval from "@/components/purchase-steps/Step5MortgageApproval";
 import Step6Closing from "@/components/purchase-steps/Step6Closing";
 import { motion, AnimatePresence } from "framer-motion";
 import StepLayout from "@/components/purchase-steps/StepLayout";
 import CompletionModal from "@/components/modals/CompletionModal";
 
-type PurchaseStep = 1 | 2 | 3 | 4 | 5 | 6;
+type PurchaseStep = 1 | 2 | 3 | 4;
 
 interface StepStatus {
   title: string;
@@ -29,33 +27,23 @@ const PropertyProcessPage = () => {
     Record<PurchaseStep, StepStatus>
   >({
     1: {
-      title: "부동산 선택 및 가격 협상",
-      description: "매물 확인 및 오퍼 제시",
+      title: "Property Selection & Price Negotiation",
+      description: "Review property and submit offer",
       isCompleted: false,
     },
     2: {
-      title: "매매계약서 작성",
-      description: "계약 조건 협의 및 서명",
+      title: "Escrow Account Setup",
+      description: "Deposit funds and select escrow company",
       isCompleted: false,
     },
     3: {
-      title: "에스크로 계좌 개설",
-      description: "계약금 입금 및 에스크로 업체 선정",
+      title: "Mortgage Approval",
+      description: "Bank review and loan confirmation",
       isCompleted: false,
     },
     4: {
-      title: "주택 검사",
-      description: "전문가 검사 및 수리 협상",
-      isCompleted: false,
-    },
-    5: {
-      title: "대출 승인",
-      description: "은행 심사 및 대출 확정",
-      isCompleted: false,
-    },
-    6: {
-      title: "클로징",
-      description: "최종 서류 작성 및 소유권 이전",
+      title: "Closing",
+      description: "Final documentation and title transfer",
       isCompleted: false,
     },
   });
@@ -80,7 +68,7 @@ const PropertyProcessPage = () => {
   };
 
   const handleNextStep = () => {
-    if (currentStep < 6) {
+    if (currentStep < 4) {
       setStepStatuses((prev) => ({
         ...prev,
         [currentStep]: { ...prev[currentStep], isCompleted: true },
@@ -235,7 +223,7 @@ const PropertyProcessPage = () => {
                       이전 단계
                     </Button>
                   )}
-                  {currentStep < 6 ? (
+                  {currentStep < 4 ? (
                     <Button
                       onClick={handleNextStep}
                       className="gap-2 cursor-pointer"
@@ -291,14 +279,10 @@ const StepContent = ({ step }: { step: PurchaseStep }) => {
     case 1:
       return <Step1PropertySelection />;
     case 2:
-      return <Step2PurchaseAgreement />;
-    case 3:
       return <Step3Escrow />;
-    case 4:
-      return <Step4Inspection />;
-    case 5:
+    case 3:
       return <Step5MortgageApproval />;
-    case 6:
+    case 4:
       return <Step6Closing />;
     default:
       return <p>준비 중입니다...</p>;

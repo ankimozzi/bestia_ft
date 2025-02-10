@@ -12,7 +12,12 @@ const Step6Closing = () => {
     finalDocuments: [] as string[],
   });
 
-  const documents = ["매매계약서", "대출 서류", "에스크로 서류", "보험 증서"];
+  const documents = [
+    "Purchase Agreement",
+    "Loan Documents",
+    "Escrow Documents",
+    "Insurance Certificate",
+  ];
 
   const handleChange = (name: string, value: any) => {
     let newFormData;
@@ -32,21 +37,21 @@ const Step6Closing = () => {
   return (
     <div className="space-y-6">
       <div>
-        <Label>클로징 일정</Label>
+        <Label>Closing Date</Label>
         <Input
           type="date"
           onChange={(e) => handleChange("closingDate", e.target.value)}
         />
       </div>
       <div>
-        <Label>타이틀 회사</Label>
+        <Label>Title Company</Label>
         <Input
           type="text"
           onChange={(e) => handleChange("titleCompany", e.target.value)}
         />
       </div>
       <div>
-        <Label className="mb-3">최종 서류 확인</Label>
+        <Label className="mb-3">Final Document Check</Label>
         <div className="space-y-2">
           {documents.map((doc) => (
             <div key={doc} className="flex items-center space-x-2">

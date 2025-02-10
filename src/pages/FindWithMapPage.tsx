@@ -14,9 +14,9 @@ const FindWithMapPage = () => {
         const response = await axios.get(
           "http://localhost:8000/api/properties"
         );
-        console.log("Properties from server:", response.data); // 데이터 확인용 로그
+        console.log("Properties from server:", response.data); // Debug log
         setProperties(response.data.properties);
-        // 도시 목록 추출
+        // Extract unique cities
         const uniqueCities = response.data.properties
           .map((p) => p.city)
           .filter((city, index, self) => self.indexOf(city) === index)
